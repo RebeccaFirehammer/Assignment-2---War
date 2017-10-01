@@ -1,21 +1,23 @@
 import java.util.Stack;
 
-public class GameA {
-	public Hand player1;
-	public Hand player2;
+public class GameB {
+	private Hand player1;
+	private Hand player2;
+	private Stack<Card> player1wins = new Stack<Card>();
+	private Stack<Card> player2wins = new Stack<Card>();
 	
-	public GameA(){
+	public GameB(){
 		Deck deck = new Deck();
 		deck.shuffleDeck();
 		deck.deal(2);
-		String tempName1 = "Calvin";
-		String tempName2 = "Hobbes";
+		String tempName1 = "Abbott";
+		String tempName2 = "Costello";
 		player1 = deck.getHand(1);
 		player2 = deck.getHand(2);
 		player1.setName(tempName1);
 		player2.setName(tempName2);
-		int turnCount = 0;
-		while(turnCount < 200 && !player1.isEmpty() && !player2.isEmpty()){
+
+		while(!player1.isEmpty() && !player2.isEmpty()){
 			switch (round()){
 				case 1:
 					System.out.println(player1.getName() + " wins the round");
@@ -26,13 +28,12 @@ public class GameA {
 				default:
 					break;
 			}
-			turnCount++;
-			System.out.println(player1.getName() + "  has " + player1.size() + " cards, " + player2.getName()+ " has " + player2.size() + " cards");
+			System.out.println("Score is " + player1.getName() + " " + player1wins.size() + ", " + player2.getName() + " " + player2wins.size());
 		}
-		if(player1.isEmpty() || player1.size() < player2.size()){
+		if(player1wins.size() < player2wins.size()){
 			System.out.println(player2.getName() + " wins the game!");
 		}
-		else if(player2.isEmpty() || player1.size() > player2.size()){
+		else if(player1wins.size() > player2wins.size()){
 			System.out.println(player1.getName() + " wins the game!");
 		}
 		else
@@ -57,13 +58,13 @@ public class GameA {
 		System.out.println(player1.getName() + " plays " + card1.getValueName() + " of " + card1.getSuit());
 		System.out.println(player2.getName() + " plays " + card2.getValueName() + " of " + card2.getSuit());
 		if (card1.getValue() > card2.getValue()){
-			player1.addToBottom(card1);
-			player1.addToBottom(card2);
+			player1wins.push(card1);
+			player1wins.push(card2);
 			return 1;
 		}
 		else if(card1.getValue() < card2.getValue()){
-			player2.addToBottom(card2);
-			player2.addToBottom(card1);
+			player2wins.push(card2);
+			player2wins.push(card1);
 			return 2;
 		}
 		else{
@@ -77,12 +78,12 @@ public class GameA {
 				}
 				else if(player1.isEmpty()){
 					while(!spoils.empty())
-						player2.addToBottom(spoils.pop());						
+						player2wins.push(spoils.pop());						
 					return 2;
 				}
 				else if(player2.isEmpty()){
 					while(!spoils.empty())
-						player1.addToBottom(spoils.pop());						
+						player1wins.push(spoils.pop());						
 					return 1;
 				}
 				spoils.push(player1.pop());
@@ -90,11 +91,11 @@ public class GameA {
 				switch (round()){
 					case 1:
 						while(!spoils.empty())
-							player1.addToBottom(spoils.pop());						
+							player1wins.push(spoils.pop());						
 						return 1;
 					case 2:
 						while(!spoils.empty())
-							player2.addToBottom(spoils.pop());
+							player2wins.push(spoils.pop());
 						return 2;
 				}
 			}
@@ -102,4 +103,5 @@ public class GameA {
 		return 0;
 
 	}
+
 }
