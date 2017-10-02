@@ -5,7 +5,7 @@ public class War {
 	public static void main(String args[]){
 		
 		Scanner reader = new Scanner(System.in);
-		System.out.println("Enter A or B: ");
+		System.out.println("Enter A, B, or C: ");
 		String game = reader.next();
 		
 		if (game.equals("A")|| game.equals("a"))
