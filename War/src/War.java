@@ -11,11 +11,8 @@ public class War {
 		if (game.equals("A")|| game.equals("a"))
 			new GameA();
 		else if (game.equals("B")|| game.equals("b"))
-			new GameB();
-			
-		
+			new GameB();	
+		else if (game.equals("C")|| game.equals("c"))
+			new GameC();	
 	}
-
-
-	
 }

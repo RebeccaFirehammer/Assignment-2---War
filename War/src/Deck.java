@@ -33,14 +33,13 @@ public class Deck {
 
 	public void deal(int players){
 		
-		do {
-			if (!cardStack.empty())
-				player1.push(cardStack.pop());
+		while(!cardStack.empty()){
+			player1.push(cardStack.pop());
 			if (!cardStack.empty())
 				player2.push(cardStack.pop());
 			if (!cardStack.empty() && players == 3)
 				player3.push(cardStack.pop());
-		}while(!cardStack.empty());
+		}
 	}
 	
 	public Hand getHand(int player){
