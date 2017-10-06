@@ -1,92 +1,96 @@
 import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GameA {
-	private Hand player1;
-	private Hand player2;
+	private Player player1;
+	private Player player2;
 
 	public GameA() {
 		Deck deck = new Deck();
-		deck.shuffleDeck();
-		deck.deal(2);
-		String tempName1 = "Calvin";
-		String tempName2 = "Hobbes";
-		player1 = deck.getHand(1);
-		player2 = deck.getHand(2);
-		player1.setName(tempName1);
-		player2.setName(tempName2);
+		List<Player> players = new ArrayList<Player>();
+		player1 =  new Player("Calvin");
+		player2 = new Player("Hobbes");
+		
+		players.add(player1);
+		players.add(player2);
+		
+		deck.shuffle();
+		deck.deal(players);
+
 		int turnCount = 0;
-		while (turnCount < 200 && !player1.isEmpty() && !player2.isEmpty()) {
+		while (turnCount < 200 && !player1.getPlayerHand().isEmpty() && !player2.getPlayerHand().isEmpty()) {
 			switch (round()) {
 			case 1:
-				System.out.println(player1.getName() + " wins the round");
+				System.out.println(player1.getPlayerName() + " wins the round");
 				break;
 			case 2:
-				System.out.println(player2.getName() + " wins the round");
+				System.out.println(player2.getPlayerName() + " wins the round");
 				break;
 			default:
 				break;
 			}
 			turnCount++;
-			System.out.println(player1.getName() + "  has " + player1.size() + " cards, " + player2.getName() + " has "
-					+ player2.size() + " cards");
+			System.out.println(player1.getPlayerName() + "  has " + player1.getPlayerHand().size() + " cards, " + player2.getPlayerName() + " has "
+					+ player2.getPlayerHand().size() + " cards");
 		}
-		if (player1.isEmpty() || player1.size() < player2.size()) {
-			System.out.println(player2.getName() + " wins the game!");
-		} else if (player2.isEmpty() || player1.size() > player2.size()) {
-			System.out.println(player1.getName() + " wins the game!");
+		if (player1.getPlayerHand().isEmpty() || player1.getPlayerHand().size() < player2.getPlayerHand().size()) {
+			System.out.println(player2.getPlayerName() + " wins the game!");
+		} else if (player2.getPlayerHand().isEmpty() || player1.getPlayerHand().size() > player2.getPlayerHand().size()) {
+			System.out.println(player1.getPlayerName() + " wins the game!");
 		} else
 			System.out.println("Tie game!");
 	}
 
 	public int round() {
-		Card card1 = player1.pop();
-		Card card2 = player2.pop();
+		Card card1 = player1.getPlayerHand().pop();
+		Card card2 = player2.getPlayerHand().pop();
 
 		if (card1 == null && card2 == null) {
 			return 0;
 		} else if (card1 == null) {
-			player2.push(card2);
+			player2.getPlayerHand().push(card2);
 			return 2;
 		} else if (card2 == null) {
-			player1.push(card1);
+			player1.getPlayerHand().push(card1);
 			return 1;
 		}
-		System.out.println(player1.getName() + " plays " + card1.getValueName() + " of " + card1.getSuit());
-		System.out.println(player2.getName() + " plays " + card2.getValueName() + " of " + card2.getSuit());
-		if (card1.getValue() > card2.getValue()) {
-			player1.addToBottom(card1);
-			player1.addToBottom(card2);
+		System.out.println(player1.getPlayerName() + " plays " + card1.getRank() + " of " + card1.getSuit());
+		System.out.println(player2.getPlayerName() + " plays " + card2.getRank() + " of " + card2.getSuit());
+		if (card1.getRank().compareTo(card2.getRank()) > 0) {
+			player1.getPlayerHand().addToBottom(card1);
+			player1.getPlayerHand().addToBottom(card2);
 			return 1;
-		} else if (card1.getValue() < card2.getValue()) {
-			player2.addToBottom(card2);
-			player2.addToBottom(card1);
+		} else if (card1.getRank().compareTo(card2.getRank()) < 0) {
+			player2.getPlayerHand().addToBottom(card2);
+			player2.getPlayerHand().addToBottom(card1);
 			return 2;
 		} else {
 			System.out.println("War!");
 			Stack<Card> spoils = new Stack<Card>();
 			spoils.push(card1);
 			spoils.push(card2);
-			if (player1.isEmpty() && player2.isEmpty()) {
+			if (player1.getPlayerHand().isEmpty() && player2.getPlayerHand().isEmpty()) {
 				return 0;
-			} else if (player1.isEmpty()) {
+			} else if (player1.getPlayerHand().isEmpty()) {
 				while (!spoils.empty())
-					player2.addToBottom(spoils.pop());
+					player2.getPlayerHand().addToBottom(spoils.pop());
 				return 2;
-			} else if (player2.isEmpty()) {
+			} else if (player2.getPlayerHand().isEmpty()) {
 				while (!spoils.empty())
-					player1.addToBottom(spoils.pop());
+					player1.getPlayerHand().addToBottom(spoils.pop());
 				return 1;
 			}
-			spoils.push(player1.pop());
-			spoils.push(player2.pop());
+			spoils.push(player1.getPlayerHand().pop());
+			spoils.push(player2.getPlayerHand().pop());
 			switch (round()) {
 			case 1:
 				while (!spoils.empty())
-					player1.addToBottom(spoils.pop());
+					player1.getPlayerHand().addToBottom(spoils.pop());
 				return 1;
 			case 2:
 				while (!spoils.empty())
-					player2.addToBottom(spoils.pop());
+					player2.getPlayerHand().addToBottom(spoils.pop());
 				return 2;
 			}
 		}

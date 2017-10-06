@@ -1,46 +1,45 @@
 import java.util.Stack;
 
 public class Hand {
-	private Stack<Card> stack = new Stack<Card>();
-	private String name = null;
+	private Stack<Card> cards;
 	
-	public void setName(String newName){
-		name = newName;
-	}
-	
-	public String getName(){
-		return name;
+	public Hand(){
+		cards = new Stack<Card>();
 	}
 
 	public void push(Card card){
-		stack.push(card);
+		cards.push(card);
 	}
 	
 	public Card pop(){
-		if(!stack.isEmpty())
-			return stack.pop();
+		if(!cards.isEmpty())
+			return cards.pop();
 		else
 			return null;
 	}
 	
 	public void addToBottom(Card card){
 		Stack<Card> reversedStack = new Stack<Card>();
-		while(!stack.empty()){
-			reversedStack.add(stack.pop());
+		while(!cards.empty()){
+			reversedStack.add(cards.pop());
 		}
 		
 		reversedStack.add(card);
 		
 		while(!reversedStack.empty()){
-			stack.add(reversedStack.pop());
+			cards.add(reversedStack.pop());
 		}
 	}
 	
 	public boolean isEmpty(){
-		return stack.isEmpty();
+		return cards.empty();
 	}
 	
 	public int size(){
-		return stack.size();
+		return cards.size();
+	}
+	
+	public String toString() {
+		return cards.toString();
 	}
 }

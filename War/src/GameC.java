@@ -1,63 +1,65 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class GameC {
-	private Hand player1;
-	private Hand player2;
-	private Hand player3;
+	private Player player1;
+	private Player player2;
+	private Player player3;
 	private Winnings player1wins = new Winnings();
 	private Winnings player2wins = new Winnings();
 	private Winnings player3wins = new Winnings();
 
 	public GameC() {
 		Deck deck = new Deck();
-		deck.shuffleDeck();
-		deck.deal(3);
-		String tempName1 = "Athos";
-		String tempName2 = "Porthos";
-		String tempName3 = "Aramis";
-		player1 = deck.getHand(1);
-		player2 = deck.getHand(2);
-		player3 = deck.getHand(3);
-		player1.setName(tempName1);
-		player2.setName(tempName2);
-		player3.setName(tempName3);
+		List<Player> players = new ArrayList<Player>();
+		player1 =  new Player("Athos");
+		player2 = new Player("Porthos");
+		player3 = new Player("Aramis");
+		
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		
+		deck.shuffle();
+		deck.deal(players);
 
-		while (!player1.isEmpty() || !player2.isEmpty() || !player3.isEmpty()) {
+		while (!player1.getPlayerHand().isEmpty() || !player2.getPlayerHand().isEmpty() || !player3.getPlayerHand().isEmpty()) {
 			switch (round()) {
 			case 1:
-				System.out.println(player1.getName() + " wins the round");
+				System.out.println(player1.getPlayerName() + " wins the round");
 				break;
 			case 2:
-				System.out.println(player2.getName() + " wins the round");
+				System.out.println(player2.getPlayerName() + " wins the round");
 				break;
 			case 3:
-				System.out.println(player3.getName() + " wins the round");
+				System.out.println(player3.getPlayerName() + " wins the round");
 				break;		
 			}						
-			System.out.println("Score is " + player1.getName() + " " + player1wins.size() + ", " + player2.getName()
-					+ " " + player2wins.size() + ", " + player3.getName() + " " + player3wins.size());
+			System.out.println("Score is " + player1.getPlayerName() + " " + player1wins.size() + ", " + player2.getPlayerName()
+					+ " " + player2wins.size() + ", " + player3.getPlayerName() + " " + player3wins.size());
 		}
 		if (player1wins.size() < player2wins.size() && player3wins.size() < player2wins.size()) {
-			System.out.println(player2.getName() + " wins the game!");
+			System.out.println(player2.getPlayerName() + " wins the game!");
 		} else if (player1wins.size() > player2wins.size() && player1wins.size() > player3wins.size()) {
-			System.out.println(player1.getName() + " wins the game!");
+			System.out.println(player1.getPlayerName() + " wins the game!");
 		} else if (player3wins.size() > player1wins.size() && player3wins.size() > player2wins.size()) {
-			System.out.println(player3.getName() + " wins the game!");
+			System.out.println(player3.getPlayerName() + " wins the game!");
 		} else
 			System.out.println("Tie game!");
 	}
 
 	public int round() {
-		Card card1 = player1.pop();
-		Card card2 = player2.pop();
-		Card card3 = player3.pop();
+		Card card1 = player1.getPlayerHand().pop();
+		Card card2 = player2.getPlayerHand().pop();
+		Card card3 = player3.getPlayerHand().pop();
 
 		if (card1 != null)
-			System.out.println(player1.getName() + " plays " + card1.getValueName() + " of " + card1.getSuit());
+			System.out.println(player1.getPlayerName() + " plays " + card1.getRank() + " of " + card1.getSuit());
 		if (card2 != null)
-			System.out.println(player2.getName() + " plays " + card2.getValueName() + " of " + card2.getSuit());
+			System.out.println(player2.getPlayerName() + " plays " + card2.getRank() + " of " + card2.getSuit());
 		if (card3 != null)
-			System.out.println(player3.getName() + " plays " + card3.getValueName() + " of " + card3.getSuit());
+			System.out.println(player3.getPlayerName() + " plays " + card3.getRank() + " of " + card3.getSuit());
 	
 		if (card1 == null && card2 == null && card3 == null) {
 			return 0;
@@ -74,11 +76,11 @@ public class GameC {
 	
 		int[] cardValues = {-1, -1, -1};
 		if (card1 != null)
-			cardValues[0] = card1.getValue();
+			cardValues[0] = card1.getRank().ordinal();
 		if (card2 != null)
-			cardValues[1] = card2.getValue();
+			cardValues[1] = card2.getRank().ordinal();
 		if (card3 != null)
-			cardValues[2] = card3.getValue();
+			cardValues[2] = card3.getRank().ordinal();
 		
 		if (cardValues[0] > cardValues[1] && cardValues[0] > cardValues[2]) {
 			player1wins.push(card1);
@@ -101,25 +103,25 @@ public class GameC {
 			spoils.push(card1);
 			spoils.push(card2);
 			spoils.push(card3);
-			if (player1.isEmpty() && player2.isEmpty() && player3.isEmpty()) {
+			if (player1.getPlayerHand().isEmpty() && player2.getPlayerHand().isEmpty() && player3.getPlayerHand().isEmpty()) {
 				return 0;
-			} else if (player1.isEmpty() && player3.isEmpty()) {
+			} else if (player1.getPlayerHand().isEmpty() && player3.getPlayerHand().isEmpty()) {
 				while (!spoils.empty())
 					player2wins.push(spoils.pop());
 				return 2;
-			} else if (player2.isEmpty() && player3.isEmpty()) {
+			} else if (player2.getPlayerHand().isEmpty() && player3.getPlayerHand().isEmpty()) {
 				while (!spoils.empty())
 					player1wins.push(spoils.pop());
 				return 1;
-			} else if (player1.isEmpty() && player2.isEmpty()) {
+			} else if (player1.getPlayerHand().isEmpty() && player2.getPlayerHand().isEmpty()) {
 				while (!spoils.empty()) {
 					player3wins.push(spoils.pop());
 				}
 				return 3;
 			}
-			spoils.push(player1.pop());
-			spoils.push(player2.pop());
-			spoils.push(player3.pop());
+			spoils.push(player1.getPlayerHand().pop());
+			spoils.push(player2.getPlayerHand().pop());
+			spoils.push(player3.getPlayerHand().pop());
 			switch (round()) {
 			case 1:
 				while (!spoils.empty())
