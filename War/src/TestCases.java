@@ -58,7 +58,7 @@ public class TestCases {
 	@Test
 	public void testGetPlayerHand()
 	{
-		//player.addCardToHand(card);
+		player.addCardToHand(card);
 		assertEquals(playerHand, player.getPlayerHand());
 	}
 	
