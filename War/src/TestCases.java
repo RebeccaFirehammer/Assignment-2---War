@@ -47,6 +47,7 @@ public class TestCases {
 	public void testGetSuit()
 	{
 		assertEquals(suit, card.getSuit());
+		
 	}
 	
 	@Test
