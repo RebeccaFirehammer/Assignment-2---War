@@ -18,8 +18,14 @@ public class Deck {
 	}
 
 	public void deal(List<Player> players){
+		Player currentPlayer;
+		Card topCard;
+		int totalPlayers = players.size();
+		
 		for(int i = 0; !cards.empty(); i++) {
-			players.get(i%(players.size())).getPlayerHand().push(cards.pop());
+			currentPlayer = players.get(i % totalPlayers);
+			topCard = cards.pop();
+			currentPlayer.addCardToHand(topCard);
 		}
 	}
 	
