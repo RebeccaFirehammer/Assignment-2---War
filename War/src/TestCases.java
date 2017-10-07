@@ -60,14 +60,29 @@ public class TestCases {
 	public void testGetPlayerHand()
 	{
 		player.addCardToHand(card);
-		assertEquals(playerHand, player.getPlayerHand());
+		cards.push(card);
+		
+		assertEquals(cards.toString(), player.getPlayerHand());
 	}
 	
 	@Test
 	public void testGetScore()
 	{
 		player.addPoints(score);
+		
 		assertEquals(score, player.getScore());
+	}
+	
+	@Test
+	public void testAddPoints()
+	{
+		int expectedScore = 1;
+		
+		score += 1;
+		player.addPoints(score);
+		
+		assertEquals(expectedScore, player.getScore());
+		
 	}
 	
 	@Test
@@ -80,6 +95,12 @@ public class TestCases {
 	public void testSize()
 	{
 		assertEquals(cards.size(), playerHand.size());
+	}
+	
+	@Test
+	public void testToString()
+	{
+		assertEquals(cards.toString(), playerHand.toString());
 	}
 
 }
