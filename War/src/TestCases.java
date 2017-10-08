@@ -6,15 +6,16 @@ import java.util.Stack;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class TestCases {
 	protected CardRank rank = CardRank.ACE;
 	protected CardSuit suit = CardSuit.HEARTS;
 	protected Card card;
+	protected Stack<Card> cards;
+	protected Hand playerHand;
 	protected Player player;
 	protected String playerName = "Test Name";
-	protected Hand playerHand;
 	protected int score = 0;
-	protected Stack<Card> cards;
 	
 	@Before
 	public void setUpCard()
@@ -32,9 +33,10 @@ public class TestCases {
 	public void setUpHand()
 	{
 		cards = new Stack<Card>();
+		cards.push(card);
+		
 		playerHand = new Hand();
 		playerHand.push(card);
-		cards.push(card);
 	}
 	
 	@Test
@@ -59,10 +61,12 @@ public class TestCases {
 	@Test
 	public void testGetPlayerHand()
 	{
-		player.addCardToHand(card);
-		cards.push(card);
+		Stack<Card> excpectedCards = new Stack<Card>();
+		excpectedCards.push(card);
 		
-		assertEquals(cards.toString(), player.getPlayerHand());
+		player.addCardToHand(card);
+		
+		assertEquals(excpectedCards.toString(), player.getPlayerHand().toString());
 	}
 	
 	@Test
@@ -101,6 +105,17 @@ public class TestCases {
 	public void testToString()
 	{
 		assertEquals(cards.toString(), playerHand.toString());
+	}
+	
+	@Test
+	public void testPop()
+	{
+		Card excpectedCard = new Card(rank, suit);
+		
+		cards.push(card);
+		
+		assertEquals(excpectedCard.toString(), cards.pop().toString());
+		
 	}
 
 }
