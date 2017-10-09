@@ -1,29 +1,31 @@
+package gamePlay;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.Arrays;
 
-public class GameC {
-	private Player player1;
-	private Player player2;
+import gameComponents.Card;
+import gameComponents.Player;
+import gameComponents.Winnings;
+
+public class GameC extends War{
+
 	private Player player3;
 	private Winnings player1wins = new Winnings();
 	private Winnings player2wins = new Winnings();
 	private Winnings player3wins = new Winnings();
 
 	public GameC() {
-		Deck deck = new Deck();
-		List<Player> players = new ArrayList<Player>();
-		player1 =  new Player("Athos");
+
+		player1 = new Player("Athos");
 		player2 = new Player("Porthos");
 		player3 = new Player("Aramis");
+		players = new ArrayList<Player>(Arrays.asList(player1, player2, player3));
 		
-		players.add(player1);
-		players.add(player2);
-		players.add(player3);
-		
-		deck.shuffle();
-		deck.deal(players);
+		setUpGame(players);
+		playGame();
 
+	}
+	
+	public void playGame(){
 		while (!player1.getPlayerHand().isEmpty() || !player2.getPlayerHand().isEmpty() || !player3.getPlayerHand().isEmpty()) {
 			switch (round()) {
 			case 1:
@@ -119,9 +121,6 @@ public class GameC {
 				}
 				return 3;
 			}
-			spoils.push(player1.getPlayerHand().pop());
-			spoils.push(player2.getPlayerHand().pop());
-			spoils.push(player3.getPlayerHand().pop());
 			switch (round()) {
 			case 1:
 				while (!spoils.empty())

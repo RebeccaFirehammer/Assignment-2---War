@@ -1,3 +1,4 @@
+package gameComponents;
 
 public enum CardRank {
 	TWO, THREE, FOUR, FIVE, SIX,

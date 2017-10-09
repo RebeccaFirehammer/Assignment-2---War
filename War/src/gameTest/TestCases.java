@@ -1,3 +1,4 @@
+package gameTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -5,6 +6,12 @@ import java.util.Stack;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import gameComponents.Card;
+import gameComponents.CardRank;
+import gameComponents.CardSuit;
+import gameComponents.Hand;
+import gameComponents.Player;
 
 
 public class TestCases {
